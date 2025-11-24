@@ -1,7 +1,7 @@
 // Beings.js
 import { CONFIG } from './Config.js';
 import { beings, foods, simWidth, simHeight } from './Main.js'; // Imports the mutable arrays and dimensions
-import { Food } from './Food.js'; // Needed for collision radius constant
+import { Food, spawnFood } from './Food.js';
 
 class Being {
     constructor(x, y, 

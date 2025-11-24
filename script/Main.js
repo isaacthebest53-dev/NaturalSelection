@@ -109,7 +109,7 @@ function loop(now){
       b.update(dt, foods, beings); 
       
       if(b.energy <= 0 || b.isEaten){ 
-        var posx = b.X, posy = Being.Y
+        var posx = b.x, posy = Being.y
         beings.splice(i,1); 
         spawnFood(1,posx,posy) 
       }

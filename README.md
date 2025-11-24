@@ -6,11 +6,12 @@
 
 **IMPORTANT**: This project uses ES6 modules, which require a web server. You cannot open the HTML file directly in your browser using the `file://` protocol.
 
+**IMPORTANT**: If running locally, you either need node.js or Python 3 installed
 
 
 **Windows**
 ```
-.\start-server.ps1
+.\start-server.bat
 ```
 
 **Mac/Linux**

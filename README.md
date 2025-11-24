@@ -1,6 +1,6 @@
 # Natural Selection Simulation
 
-##IT IS HIGHLY RECOMMENDED TO USE BLANK IS
+## IT IS HIGHLY RECOMMENDED TO USE https://isaacthebest53-dev.github.io/NaturalSelection/ instead of running locally
 
 ## Running the Simulation Locally
 

@@ -3,7 +3,7 @@ REM Natural Selection Simulation - Server Launcher (Batch Version)
 REM This script starts a local web server and opens the simulation in your browser
 
 set PORT=8000
-set URL=http://localhost:%PORT%/circle_beings_simulation.html
+set URL=http://localhost:%PORT%/index.html
 
 echo.
 echo Starting Natural Selection Simulation Server...

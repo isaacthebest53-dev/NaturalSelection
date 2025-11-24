@@ -3,7 +3,7 @@
 # This script starts a local web server and opens the simulation in your browser
 
 PORT=8000
-URL="http://localhost:${PORT}/circle_beings_simulation.html"
+URL="http://localhost:${PORT}/index.html"
 
 echo ""
 echo "Starting Natural Selection Simulation Server..."
@@ -11,7 +11,7 @@ echo ""
 
 # Function to open browser (works on both Mac and Linux)
 open_browser() {
-    sleep 2
+    sleep 2y8iehoi
     if [[ "$OSTYPE" == "darwin"* ]]; then
         # macOS
         open "$URL"

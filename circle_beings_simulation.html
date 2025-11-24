@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Natural Selection Simulation</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  
+  <!-- Main UI Container for both panels -->
+  <div class="fixed left-4 top-4 z-10 flex space-x-4 items-start">
+      
+      <!-- Existing Evolution Control UI -->
+      <!-- Initial classes applied: max-w-[280px] and max-h-48 (defined in style block) -->
+      <div id="ui" class="p-4 bg-gray-900 bg-opacity-90 backdrop-blur-sm rounded-xl shadow-2xl text-white max-w-[280px]">
+          
+          <div class="flex justify-between items-center mb-3">
+              <h2 class="text-xl font-bold text-blue-400 cursor-pointer" id="toggleConfig">
+                  Evolution Control
+              </h2>
+              <button id="pause" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition shadow-md">Pause</button>
+          </div>
+
+          <div class="text-sm space-y-1 p-2 bg-gray-800 rounded-lg mb-4">
+              <div class="flex justify-between">
+                  <span>Simulation Speed:</span>
+                  <input type="range" id="simSpeedInput" min="0.1" max="10" step="0.1" value="10" class="w-24">
+              </div>
+              <div class="flex justify-between">
+                  <span>Beings:</span>
+                  <span id="count" class="font-bold text-lg text-orange-400">0</span>
+              </div>
+              <div class="flex justify-between">
+                  <span>Food:</span>
+                  <span id="foodCount" class="font-bold text-lg text-lime-400">0</span>
+              </div>
+              <div class="flex justify-between">
+                  <span>Avg Speed:</span>
+                  <span id="avgSpeed" class="font-bold text-lg text-yellow-400">0.00</span>
+              </div>
+              <div class="flex justify-between">
+                  <span>Avg Sense:</span>
+                  <span id="avgSense" class="font-bold text-lg text-cyan-400">0.00</span>
+              </div>
+              <div class="flex justify-between">
+                  <span>Avg Size:</span>
+                  <span id="avgSize" class="font-bold text-lg text-red-400">0.00</span>
+              </div>
+              <div class="flex justify-between">
+                  <span>Avg Merge:</span>
+                  <span id="avgMerge" class="font-bold text-lg text-purple-400">0.00</span>
+              </div>
+              <div class="flex space-x-2 pt-2 border-t border-gray-700">
+                  <button id="addBeings" class="w-full py-1 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg transition shadow-md text-xs">+ 5 Beings</button>
+                  <button id="addFood" class="w-full py-1 bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-semibold rounded-lg transition shadow-md text-xs">+ 10 Food</button>
+              </div>
+          </div>
+          
+          <div id="config-controls" class="pt-3 border-t border-gray-700 space-y-2 text-sm">
+            <h3 class="font-bold mb-2 text-blue-300">Evolutionary Settings</h3>
+            
+            <div class="flex justify-between items-center">
+              <label title="The speed all initial beings start with">Initial Max Speed:</label>
+              <div class="flex items-center space-x-2">
+                  <input type="range" id="initialMaxSpeed" min="0.1" max="5" step="0.1" value="1.0" class="sim-slider">
+                  <span id="initialMaxSpeedValue" class="slider-value">1.0</span>
+              </div>
+            </div>
+            
+            <div class="flex justify-between items-center">
+              <label title="The perception range all initial beings start with">Initial Sense Range:</label>
+              <div class="flex items-center space-x-2">
+                  <input type="range" id="initialSenseRange" min="50" max="500" step="10" value="50" class="sim-slider">
+                  <span id="initialSenseRangeValue" class="slider-value">50</span>
+              </div>
+            </div>
+            
+            <div class="flex justify-between items-center">
+              <label title="The radius multiplier all initial beings start with (Base radius is 12px)">Initial Size Mult:</label>
+              <div class="flex items-center space-x-2">
+                  <input type="range" id="initialSizeMultiplier" min="0.5" max="3" step="0.1" value="1.0" class="sim-slider">
+                  <span id="initialSizeMultiplierValue" class="slider-value">1.0</span>
+              </div>
+            </div>
+
+            <div class="flex justify-between items-center">
+              <label title="The likelihood (0-100%) that predation turns into merging">Initial Merge Chance (%):</label>
+              <div class="flex items-center space-x-2">
+                  <input type="range" id="initialMergeChance" min="0" max="100" step="1" value="10" class="sim-slider">
+                  <span id="initialMergeChanceValue" class="slider-value">10</span>
+              </div>
+            </div>
+            
+            <div class="h-px bg-gray-700 my-2"></div> <div class="flex justify-between items-center">
+              <label title="Multiplier for the V² * S² energy cost">Sense Cost Mult (C_sense):</label>
+              <div class="flex items-center space-x-2">
+                  <input type="range" id="senseCostMultiplier" min="0.001" max="0.1" step="0.001" value="0.005" class="sim-slider">
+                  <span id="senseCostMultiplierValue" class="slider-value">0.005</span>
+              </div>
+            </div>
+            
+            <div class="flex justify-between items-center">
+              <label title="Base energy loss proportional to speed squared (v²)">Speed Cost (C_speed):</label>
+              <div class="flex items-center space-x-2">
+                  <input type="range" id="speedCostMultiplier" min="0.1" max="2" step="0.1" value="0.5" class="sim-slider">
+                  <span id="speedCostMultiplierValue" class="slider-value">0.5</span>
+              </div>
+            </div>
+            
+            <div class="flex justify-between items-center">
+              <label title="Multiplier for the energy cost proportional to Size²">Size Cost Mult (C_size):</label>
+              <div class="flex items-center space-x-2">
+                  <input type="range" id="sizeCostMultiplier" min="0.5" max="10" step="0.5" value="3.0" class="sim-slider">
+                  <span id="sizeCostMultiplierValue" class="slider-value">3.0</span>
+              </div>
+            </div>
+            
+            <div class="flex justify-between items-center">
+              <label>Base Loss (E/s):</label>
+              <div class="flex items-center space-x-2">
+                  <input type="range" id="baseEnergyLoss" min="0.5" max="10" step="0.1" value="0.5" class="sim-slider">
+                  <span id="baseEnergyLossValue" class="slider-value">0.5</span>
+              </div>
+            </div>
+            
+            <div class="h-px bg-gray-700 my-2"></div> <div class="flex justify-between items-center">
+              <label>Initial Pop:</label>
+              <div class="flex items-center space-x-2">
+                  <input type="range" id="beingsInit" min="1" max="100" step="1" value="20" class="sim-slider">
+                  <span id="beingsInitValue" class="slider-value">20</span>
+              </div>
+            </div>
+            
+            <div class="flex justify-between items-center">
+              <label>Max Food:</label>
+              <div class="flex items-center space-x-2">
+                  <input type="range" id="maxFood" min="10" max="1000" step="10" value="500" class="sim-slider">
+                  <span id="maxFoodValue" class="slider-value">500
+                  </span>
+              </div>
+            </div>
+            
+            <div class="flex justify-between items-center">
+              <label title="Applied to all four traits (speed, sense, size, merge)">Mutation Rate (%):</label>
+              <div class="flex items-center space-x-2">
+                  <input type="range" id="mutationRate" min="0" max="100" step="1" value="20" class="sim-slider">
+                  <span id="mutationRateValue" class="slider-value">20</span>
+              </div>
+            </div>
+
+            <div class="flex justify-between items-center">
+              <label title="Time in seconds between automatic food spawns">Food Spawn Interval (s):</label>
+              <div class="flex items-center space-x-2">
+                  <input type="range" id="foodSpawnInterval" min="0.1" max="5" step="0.1" value="0.1" class="sim-slider">
+                  <span id="foodSpawnIntervalValue" class="slider-value">0.1</span>
+              </div>
+            </div>
+
+            <button id="resetSim" class="w-full mt-3 px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg transition shadow-lg">Reset Simulation</button>
+          </div>
+      </div>
+      
+      <!-- NEW Graph UI Panel -->
+      <!-- Initial classes applied: max-w-[280px] and max-h-64 (defined in style block) -->
+      <div id="graph-ui" class="p-4 bg-gray-900 bg-opacity-90 backdrop-blur-sm rounded-xl shadow-2xl text-white max-w-[320px] flex flex-col">
+          <div class="flex justify-between items-center mb-3 flex-shrink-0">
+              <h2 class="text-xl font-bold text-teal-400 cursor-pointer" id="toggleGraph">
+                  Trait Distribution
+              </h2>
+              <button id="refreshGraph" class="px-3 py-1 bg-teal-600 hover:bg-teal-700 text-white font-semibold rounded-lg transition shadow-md text-sm">Refresh</button>
+          </div>
+
+          <div id="graph-controls" class="pt-3 border-t border-gray-700 space-y-2 text-sm flex-grow">
+              <div class="flex justify-between items-center">
+                  <label for="xAxisTrait">X-Axis Trait:</label>
+                  <select id="xAxisTrait" class="bg-gray-700 p-1 rounded text-yellow-400">
+                      <option value="maxSpeed">Max Speed</option>
+                      <option value="senseRange" selected>Sense Range</option>
+                      <option value="sizeMultiplier">Size Mult</option>
+                      <option value="mergeChance">Merge Chance</option>
+                  </select>
+              </div>
+              <div class="flex justify-between items-center">
+                  <label for="yAxisTrait">Y-Axis Trait:</label>
+                  <select id="yAxisTrait" class="bg-gray-700 p-1 rounded text-yellow-400">
+                      <option value="maxSpeed" selected>Max Speed</option>
+                      <option value="senseRange">Sense Range</option>
+                      <option value="sizeMultiplier">Size Mult</option>
+                      <option value="mergeChance">Merge Chance</option>
+                  </select>
+              </div>
+              <!-- This canvas container maintains a fixed minimum height -->
+              <div class="h-[200px] w-full mt-4"> 
+                  <canvas id="trait-scatter-chart"></canvas>
+              </div>
+          </div>
+      </div>
+  </div>
+  
+  <div id="top" style="height:100vh;overflow:hidden;"><canvas id="c"></canvas></div>
+  
+  <script type="module" src="script/Main.js"></script>
+</body>
+</html> 

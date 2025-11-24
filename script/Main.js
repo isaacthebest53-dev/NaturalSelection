@@ -109,6 +109,7 @@ function loop(now){
       b.update(dt, foods, beings); 
       
       if(b.energy <= 0 || b.isEaten){ 
+        spawnFood(1,b.X, b.Y);
           beings.splice(i,1); 
       }
     }

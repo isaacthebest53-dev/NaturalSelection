@@ -123,9 +123,8 @@ function loop(now){
       togglePause(); 
       console.log("Simulation paused: All beings have died. Press Resume to restart the time flow, or Reset to start a new population.");
       //temp
-      console.log (simWidth)
-      console.log (simHeight
-      )
+      console.log (simWidth);
+      console.log (simHeight);
   }
   if (currentPopulation > 0) {
       totalSpeed = beings.reduce((sum, b) => sum + b.maxSpeed, 0);
